@@ -1,0 +1,8 @@
+youtube url - https://www.youtube.com/watch?v=sU0PeFgjvic&t=72ss
+to add the payout endpoint that the validator can click and get the payout
+in this another video https://www.youtube.com/watch?v=zi0iR3UN-u0&t=11345s
+the payout using solana is discussed can apply same arch in this project also 
+
+Understanding the validator and hub communication over websocket
+for every request and response they are sending a callbackid from which we know that
+this is the response for this specific request
