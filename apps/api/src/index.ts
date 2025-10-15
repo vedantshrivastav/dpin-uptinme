@@ -11,7 +11,7 @@ const PORT = 8080
 //add the website in the database
 app.post('/api/v1/website',authMiddleware, async(req,res) =>{
     const userId = req.userId!
-    const {url} = req.body
+    const {url,max_no_of_validators,amount} = req.body
    const data = await Prismaclient.website.create({
         data : {
           userId,

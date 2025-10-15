@@ -28,9 +28,7 @@ export default function Appbar() {
               </Button>
             </SignedOut>
             <SignedIn>
-              <Button>
-                <UserButton />
-              </Button>
+              <UserButton />
             </SignedIn>
           </div>
         </div>

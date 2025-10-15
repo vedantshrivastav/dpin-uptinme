@@ -8,6 +8,12 @@ import { API_BACKEND_URL } from "@/config";
 
 type UptimeStatus = "good" | "bad" | "unknown";
 
+type WebsiteData = {
+  url: string;
+  max_no_of_validators: string;
+  amount: string;
+};
+
 function StatusCircle({ status }: { status: UptimeStatus }) {
   return (
     <div
@@ -40,9 +46,11 @@ function CreateWebsiteModal({
   onClose,
 }: {
   isOpen: boolean;
-  onClose: (url: string | null) => void;
+  onClose: (data: WebsiteData | null) => void;
 }) {
   const [url, setUrl] = useState("");
+  const [max_no_of_validators, setmax_no_of_validators] = useState("");
+  const [amount, setamount] = useState("");
   if (!isOpen) return null;
 
   return (
@@ -51,17 +59,43 @@ function CreateWebsiteModal({
         <h2 className="text-xl font-semibold mb-4 dark:text-white">
           Add New Website
         </h2>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            URL
-          </label>
-          <input
-            type="url"
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
-            placeholder="https://example.com"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              URL
+            </label>
+            <input
+              type="url"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+              placeholder="https://example.com"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Max Validator
+            </label>
+            <input
+              type="number"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+              placeholder="Enter the max no of validator"
+              value={max_no_of_validators}
+              onChange={(e) => setmax_no_of_validators(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Amount
+            </label>
+            <input
+              type="number"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+              placeholder="Enter amount in $"
+              value={amount}
+              onChange={(e) => setamount(e.target.value)}
+            />
+          </div>
         </div>
         <div className="flex justify-end space-x-3 mt-6">
           <button
@@ -73,7 +107,13 @@ function CreateWebsiteModal({
           </button>
           <button
             type="submit"
-            onClick={() => onClose(url)}
+            onClick={() =>
+              onClose({
+                url,
+                max_no_of_validators,
+                amount,
+              })
+            }
             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
           >
             Add Website
@@ -259,12 +299,12 @@ function App() {
 
       <CreateWebsiteModal
         isOpen={isModalOpen}
-        onClose={async (url) => {
-          if (url === null) {
+        onClose={async (data) => {
+          if (data === null) {
             setIsModalOpen(false);
             return;
           }
-
+          const { url, max_no_of_validators, amount } = data;
           const token = await getToken();
           setIsModalOpen(false);
           const response = axios
@@ -272,6 +312,8 @@ function App() {
               `${API_BACKEND_URL}/api/v1/website`,
               {
                 url,
+                max_no_of_validators,
+                amount,
               },
               {
                 headers: {
