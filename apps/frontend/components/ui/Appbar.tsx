@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable @next/next/no-img-element */
 import {
   SignedIn,
@@ -5,13 +6,23 @@ import {
   UserButton,
   SignInButton,
   SignUpButton,
+  useUser,
 } from "@clerk/nextjs";
-import { Button } from "../ui/button";
-import { Card } from "../ui/card";
+import { Button } from "./button";
+import { Card } from "./card";
 import { Network, Zap, Shield, Globe, Activity } from "lucide-react"; // or your icons
-import heroNetwork from "../assets/hero-network.png";
+import heroNetwork from "@/components/assets/hero-network.png";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 export default function Appbar() {
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/dashboard");
+    }
+  }, [isSignedIn, router]);
   return (
     <div className="min-h-screen bg-background">
       {/* Top Nav with Auth */}
@@ -20,16 +31,19 @@ export default function Appbar() {
           <div className="text-lg font-bold">DPin Uptime</div>
           <div className="flex gap-2">
             <SignedOut>
-              <Button className="bg-green-400">
-                <SignInButton />
-              </Button>
-              <Button className="bg-green-400">
-                <SignUpButton />
-              </Button>
+              <SignInButton mode="redirect" forceRedirectUrl="/dashboard">
+                <Button className="bg-green-400">Sign In</Button>
+              </SignInButton>
+
+              <SignUpButton mode="redirect" forceRedirectUrl="/dashboard">
+                <Button className="bg-green-400">Sign Up</Button>
+              </SignUpButton>
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
+            <Button className="bg-green-400">Validator Sign In</Button>
+            <Button className="bg-green-400">Validator Sign Up</Button>
           </div>
         </div>
       </div>

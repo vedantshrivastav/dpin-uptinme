@@ -5,7 +5,8 @@ import { useWebsites } from "@/hooks/useWebsites";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { API_BACKEND_URL } from "@/config";
-
+import { UserButton } from "@clerk/nextjs";
+import { SignOutButton } from "@clerk/nextjs";
 type UptimeStatus = "good" | "bad" | "unknown";
 
 type WebsiteData = {
@@ -287,6 +288,11 @@ function App() {
               <Plus className="w-4 h-4" />
               <span>Add Website</span>
             </button>
+            <SignOutButton>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg  hover:bg-blue-700 transition-colors duration-200 cursor-pointer">
+                Signout
+              </button>
+            </SignOutButton>
           </div>
         </div>
 
